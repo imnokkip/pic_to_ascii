@@ -8,7 +8,7 @@ from PyQt5.QtGui import QPixmap, QResizeEvent
 from PyQt5.QtCore import Qt
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow):#Класс окна
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PyQt5 Приложение")
@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
             }
         """)
 
-    def open_file_dialog(self):
+    def open_file_dialog(self):#открытие файла
         self.file_path, _ = QFileDialog.getOpenFileName(
             self, "Выберите файл", "", "Картинки (*.png *.jpg *.jpeg *.bmp);;Все файлы (*.*)"
         )
@@ -113,7 +113,7 @@ class MainWindow(QMainWindow):
             self.original_pixmap = QPixmap(self.file_path)
             self.update_pic_size()
 
-    def update_pic_size(self):
+    def update_pic_size(self):#Функция обновления размера превью
         if self.original_pixmap and not self.original_pixmap.isNull():
             pic_size = self.pic.size()
             if pic_size.width() > 0 and pic_size.height() > 0:
@@ -125,24 +125,24 @@ class MainWindow(QMainWindow):
                 )
                 self.pic.setPixmap(scaled_pix)
 
-    def resizeEvent(self, event: QResizeEvent):
+    def resizeEvent(self, event: QResizeEvent):#привязка к изменению размера окна
         super().resizeEvent(event)
         self.update_pic_size()
 
-    def pic_to_ascii(self):
-        gradient = "@$s*^-' "
+    def pic_to_ascii(self):#перевод картинки в ascii
+        gradient = "@$s*^-' "#палитра цветов на 8 оттенков (пока только так, в будующем увеличу кол-во оттенков)
         if self.file_path:
             img = Image.open(self.file_path)
-            img = img.convert('L')
+            img = img.convert('L')#картинка в ЧБ
             max_size = 50
             scale = max(img.size) / max_size
-            if scale > 1:
+            if scale > 1:#изменение разрешения
                 new_size = (int(img.width / scale), int(img.height / scale))
                 img = img.resize(new_size)
 
             pixels = img.load()
             ascii_pic = ""
-            for y in range(img.height):
+            for y in range(img.height):#перебор цветов и подбор символа под оттенок
                 for x in range(img.width):
                     color = pixels[x, y]
                     ascii_pic += gradient[color // 32] * 2
