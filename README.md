@@ -32,7 +32,7 @@
 git clone https://github.com/imnokkip/pic_to_ascii
 pip install -r requirements.txt
 ```
-### 2. Запуcкаете main.py
+### 2. Запуcкаем main.py
 
 ---
 
